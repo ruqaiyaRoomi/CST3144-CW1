@@ -12,49 +12,147 @@
 <body>
     <div id="app">
         <header>
-            <nav>
-    
-                <button id="cart">0<span><i class="fa-solid fa-cart-shopping"></i></span></button>
-            </nav>
+        
+            <button id="cart">{{cartCount}}<span><i class="fa-solid fa-cart-shopping"></i></span></button>
         </header>
-        <div id="lessonContainer">
-            <div class="lessonCard" v-for="lesson in lessons">
-                    <p>Subject: {{lesson.Subject}}</p> 
-                    <p>Location: {{lesson.Location}}</p>
-                    <p>Price: {{lesson.Price}}</p>
-                    <p>Spaces: {{lesson.Spaces}}</p>
-                    <button>Add to Cart</button>
-                    <i v-bind:src="lesson.Icon"></i>
-        </div>
+<main>
+        <div id="sidebar">
+            <p>sort by</p>
+            <label for="sub"><input type="radio" id="sub" name="sort" value="subject"> subject</label>
+            <label for="locationOrder"><input type="radio" id="locationOrder" name="sort" value="location"> location</label>
+            <label for="price"><input type="radio" id="price" name="sort" value="price"> price</label>
+            <label for="spaces"><input type="radio" id="spaces" name="sort" value="availability"> availability</label>
+            
+            <p>order</p>
+            <label for="ascending"><input type="radio" name="order" id="ascending" value="ascending"> ascending</label>
+            <label for="descending"><input type="radio" name="order" id="descending" value="descending"> descending</label>
     </div>
 
-    <script type="text/javascript">
-        let afterSchool = new Vue ({
-            el: "#app",
+        <div id="lessonContainer">
+            <div class="lessonCard" v-for="lesson in lessons">
+                    <p>Subject: {{lesson.subject}}</p> 
+                    <p>Location: {{lesson.location}}</p>
+                    <p>Price: {{lesson.price}}</p>
+                    <p>Spaces: {{spacesCount}}</p>
+                    <button v-on:click="addToCart(lesson)">Add to Cart</button>
+                    <i v-bind:class="lesson.icon"></i>
+            </div>
+        </div>
 
-            data: {
-                lessons: [
-                    {
-                    id: 1001,
-                    Subject: "Math",
-                    Location: "London",
-                    Price: 50,
-                    Spaces: 5,
-                    Icon: "fa-solid fa-calculator",
+</main>
+        <script type="text/javascript">
+            let afterSchool = new Vue ({
+                el: "#app",
+                data:{
+                        lessons: [
+                            {
+                            id: 1001,
+                            subject: "Math",
+                            location: "London",
+                            price: 50,
+                            spaces: 5,
+                            icon: "fa-solid fa-calculator",
+                            },
+
+                            {
+                            id: 1002,
+                            subject: "English",
+                            location: "London",
+                            price: 60,
+                            spaces: 5,
+                            icon: "fa-solid fa-book-open",
+                            },
+
+                            {
+                            id: 1003,
+                            subject: "Biology",
+                            location: "London",
+                            price: 20,
+                            spaces: 5,
+                            icon: "fa-solid fa-dna",
+                            },
+
+                            {
+                            id: 1002,
+                            subject: "chemistry",
+                            location: "London",
+                            price: 60,
+                            spaces: 5,
+                            icon: "fa-solid fa-flask",
+                            },
+                            {
+                            id: 1002,
+                            subject: "Spanish",
+                            location: "London",
+                            price: 60,
+                            spaces: 5,
+                            icon: "fa-solid fa-book-open",
+                            },
+                            {
+                            id: 1001,
+                            subject: "French",
+                            location: "London",
+                            price: 50,
+                            spaces: 5,
+                            icon: "fa-solid fa-language",
+                            },
+
+                            {
+                            id: 1002,
+                            subject: "English",
+                            location: "USA",
+                            price: 60,
+                            spaces: 5,
+                            icon: "fa-solid fa-book-open",
+                            },
+
+                            {
+                            id: 1003,
+                            subject: "Biology",
+                            location: "Germany",
+                            price: 20,
+                            spaces: 5,
+                            icon: "fa-solid fa-dna",
+                            },
+
+                            {
+                            id: 1002,
+                            subject: "Music",
+                            location: "Italy",
+                            price: 60,
+                            spaces: 5,
+                            icon: "fa-solid fa-music",
+                            },
+                            {
+                            id: 1002,
+                            subject: "Math",
+                            location: "Canada",
+                            price: 60,
+                            spaces: 5,
+                            icon: "fa-solid fa-calculator",
+                            },
+
+                            ],
+                            cart: [],
                     },
 
-                     {
-                    id: 1002,
-                    Subject: "English",
-                    Location: "London",
-                    Price: 60,
-                    Spaces: 5,
-                    Icon: "fa-solid fa-book-open",
+                methods: {
+                    addToCart: function(lesson) {
+                        this.cart.push(lesson);
+                    }
+                },
+                computed: {
+                    cartCount: function() {
+                        return this.cart.length;
                     },
 
-                     ]
-                }
-        })
-    </script>
-</body>
+                    spacesCount: function(){
+                        return this.lessons.spaces - this.cart.length;
+                    }
+                },
+            });
+        </script>
+
+    </body>
 </html>
+
