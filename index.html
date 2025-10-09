@@ -19,29 +19,38 @@
         <div id="sidebar">
             <p>sort by</p>
             <label for="sub">
-                <input type="radio" id="sub" name="sort" v-model="keySort"> subject
+                <input type="radio" value="subject" name="sort" v-model="key" > subject
             </label>
-            <label for="locationOrder"><input type="radio" id="locationOrder" name="sort"> location</label>
-            <label for="price"><input type="radio" id="price" name="sort"> price</label>
-            <label for="spaces"><input type="radio" id="spaces" name="sort"> availability</label>
-            
+
+            <label for="location">
+                <input type="radio" value="location" name="sort" v-model="key" > location
+            </label>
+
+            <label for="price">
+                <input type="radio"  value="price" name="sort" v-model="key"> price
+            </label>
+
+            <label for="spaces">
+                <input type="radio" value="spaces" name="sort" v-model="key"> availability
+            </label>
             <p>order</p>
-            <label for="ascending"><input type="radio" name="order" id="ascending" v-model="sortAsc"> ascending</label>
-            <label for="descending"><input type="radio" name="order" id="descending"> descending</label>
+            <label for="ascending"><input type="radio" name="order" id="ascending" v-on:change="sortAsc"> ascending</label>
+            <label for="descending"><input type="radio" name="order" id="descending" v-on:change="sortDsc"> descending</label>
     </div>
 
         <div id="lessonContainer">
-            <div class="lessonCard" v-for="lesson in lessons">
+            <div class="lessonCard" v-for="lesson in sortedList">
                     <p>Subject: {{lesson.subject}}</p> 
                     <p>Location: {{lesson.location}}</p>
                     <p>Price: {{lesson.price}}</p>
-                    <p>Spaces: {{spacesCount}}</p>
+                    <p>Spaces: {{lesson.spaces}}</p>
                     <button v-on:click="addToCart(lesson)">Add to Cart</button>
                     <i v-bind:class="lesson.icon"></i>
             </div>
         </div>
 
-        <p>key: {{keySort}}</p>
+        <p>key: {{key}}</p>
+
 
 </main>
         <script type="text/javascript">
@@ -53,8 +62,8 @@
                             id: 1001,
                             subject: "Math",
                             location: "London",
-                            price: 50,
-                            spaces: 5,
+                            price: 500,
+                            spaces: 4,
                             icon: "fa-solid fa-calculator",
                             },
 
@@ -62,8 +71,8 @@
                             id: 1002,
                             subject: "English",
                             location: "London",
-                            price: 60,
-                            spaces: 5,
+                            price: 6,
+                            spaces: 2,
                             icon: "fa-solid fa-book-open",
                             },
 
@@ -77,15 +86,15 @@
                             },
 
                             {
-                            id: 1002,
-                            subject: "chemistry",
+                            id: 1004,
+                            subject: "hemistry",
                             location: "London",
                             price: 60,
                             spaces: 5,
                             icon: "fa-solid fa-flask",
                             },
                             {
-                            id: 1002,
+                            id: 1005,
                             subject: "Spanish",
                             location: "London",
                             price: 60,
@@ -93,16 +102,16 @@
                             icon: "fa-solid fa-book-open",
                             },
                             {
-                            id: 1001,
+                            id: 1006,
                             subject: "French",
                             location: "London",
-                            price: 50,
+                            price: 550,
                             spaces: 5,
                             icon: "fa-solid fa-language",
                             },
 
                             {
-                            id: 1002,
+                            id: 1007,
                             subject: "English",
                             location: "USA",
                             price: 60,
@@ -111,7 +120,7 @@
                             },
 
                             {
-                            id: 1003,
+                            id: 1008,
                             subject: "Biology",
                             location: "Germany",
                             price: 20,
@@ -120,7 +129,7 @@
                             },
 
                             {
-                            id: 1002,
+                            id: 1009,
                             subject: "Music",
                             location: "Italy",
                             price: 60,
@@ -128,7 +137,7 @@
                             icon: "fa-solid fa-music",
                             },
                             {
-                            id: 1002,
+                            id: 1010,
                             subject: "Math",
                             location: "Canada",
                             price: 60,
@@ -138,7 +147,7 @@
 
                             ],
                             cart: [],
-                            keySort: '',
+                            key: '',
                             sortedList: [],
                     },
 
@@ -147,29 +156,64 @@
                         this.cart.push(lesson);
                     },
                     sortAsc:  function(){
-                        if(this.keySort === 'subject') {
+                        if(this.key === 'subject') {
                             this.sortedList = this.lessons.slice().sort((a,b) =>
-                             a.title.localeCompare(b.title))
-                        } else if (this.keySort === 'price') {
-                            this.sortedList = this.lessons.slice().sort((a,b =>
+                             a.subject.localeCompare(b.subject))
+                        } else if (this.key === 'price') {
+                            this.sortedList = this.lessons.slice().sort((a,b) =>
                                 a.price - b.price
-                            ))
+                            )
+                        } else if (this.key === 'location') {
+                            this.sortedList = this.lessons.slice().sort((a,b) =>
+                                a.location.localeCompare(b.location)
+                            )
+                        } else if (this.key === 'spaces') {
+                            this.sortedList = this.lessons.slice().sort((a,b) =>
+                                a.spaces - b.spaces
+                            ) }
+                        else  {
+                            this.sortedList =  this.lessons
                         }
+                    },
 
-                        console.log(keySort);
-                        console.log(sortedList);
-                    }
 
+                     sortDsc:  function(){
+                        if(this.key === 'subject') {
+                            this.sortedList = this.lessons.slice().sort((a,b) =>
+                             b.subject.localeCompare(a.subject))
+                        } else if (this.key === 'price') {
+                            this.sortedList = this.lessons.slice().sort((a,b) =>
+                                b.price - a.price
+                            )
+                        } else if (this.key === 'location') {
+                            this.sortedList = this.lessons.slice().sort((a,b) =>
+                                b.location.localeCompare(a.location)
+                            )
+                        } else if (this.key === 'spaces') {
+                            this.sortedList = this.lessons.slice().sort((a,b) =>
+                                b.spaces - a.spaces
+                            ) }
+                        else  {
+                            this.sortedList =  this.lessons
+                        }
+                    },
+
+             
                 },
+
+                mounted() {
+                    this.sortedList =  this.lessons;
+                },
+
                 computed: {
                     cartCount: function() {
                         return this.cart.length;
                     },
 
-                    spacesCount: function(){
-                        return this.lessons.spaces - this.cart.length;
-                    }
+                    
                 },
+
+    
             });
         </script>
 
