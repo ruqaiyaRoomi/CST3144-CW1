@@ -18,14 +18,16 @@
 <main>
         <div id="sidebar">
             <p>sort by</p>
-            <label for="sub"><input type="radio" id="sub" name="sort" value="subject"> subject</label>
-            <label for="locationOrder"><input type="radio" id="locationOrder" name="sort" value="location"> location</label>
-            <label for="price"><input type="radio" id="price" name="sort" value="price"> price</label>
-            <label for="spaces"><input type="radio" id="spaces" name="sort" value="availability"> availability</label>
+            <label for="sub">
+                <input type="radio" id="sub" name="sort" v-model="keySort"> subject
+            </label>
+            <label for="locationOrder"><input type="radio" id="locationOrder" name="sort"> location</label>
+            <label for="price"><input type="radio" id="price" name="sort"> price</label>
+            <label for="spaces"><input type="radio" id="spaces" name="sort"> availability</label>
             
             <p>order</p>
-            <label for="ascending"><input type="radio" name="order" id="ascending" value="ascending"> ascending</label>
-            <label for="descending"><input type="radio" name="order" id="descending" value="descending"> descending</label>
+            <label for="ascending"><input type="radio" name="order" id="ascending" v-model="sortAsc"> ascending</label>
+            <label for="descending"><input type="radio" name="order" id="descending"> descending</label>
     </div>
 
         <div id="lessonContainer">
@@ -38,6 +40,8 @@
                     <i v-bind:class="lesson.icon"></i>
             </div>
         </div>
+
+        <p>key: {{keySort}}</p>
 
 </main>
         <script type="text/javascript">
@@ -134,12 +138,28 @@
 
                             ],
                             cart: [],
+                            keySort: '',
+                            sortedList: [],
                     },
 
                 methods: {
                     addToCart: function(lesson) {
                         this.cart.push(lesson);
+                    },
+                    sortAsc:  function(){
+                        if(this.keySort === 'subject') {
+                            this.sortedList = this.lessons.slice().sort((a,b) =>
+                             a.title.localeCompare(b.title))
+                        } else if (this.keySort === 'price') {
+                            this.sortedList = this.lessons.slice().sort((a,b =>
+                                a.price - b.price
+                            ))
+                        }
+
+                        console.log(keySort);
+                        console.log(sortedList);
                     }
+
                 },
                 computed: {
                     cartCount: function() {
