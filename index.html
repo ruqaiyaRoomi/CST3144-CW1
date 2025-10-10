@@ -34,18 +34,24 @@
                 <input type="radio" value="spaces" name="sort" v-model="key"> availability
             </label>
             <p>order</p>
-            <label for="ascending"><input type="radio" name="order" id="ascending" v-on:change="sortAsc"> ascending</label>
-            <label for="descending"><input type="radio" name="order" id="descending" v-on:change="sortDsc"> descending</label>
+            <label for="ascending"><input type="radio" value="asc" name="order"  id="ascending"  v-on:change="sortAsc"> ascending</label>
+            <label for="descending"><input type="radio" value="dsc"  name="order" id="descending" v-on:change="sortDsc"> descending</label>
     </div>
 
         <div id="lessonContainer">
             <div class="lessonCard" v-for="lesson in sortedList">
-                    <p>Subject: {{lesson.subject}}</p> 
-                    <p>Location: {{lesson.location}}</p>
-                    <p>Price: {{lesson.price}}</p>
-                    <p>Spaces: {{lesson.spaces}}</p>
-                    <button v-on:click="addToCart(lesson)">Add to Cart</button>
-                    <i v-bind:class="lesson.icon"></i>
+                <div><img src="" alt=""></div>
+                <div class="lessonBody">
+                    <div class="lessonInfo">
+                    <p class="subject">Subject: {{lesson.subject}}</p> 
+                    <p class="location">Location: {{lesson.location}}</p>
+                    <p class="spaces">Spaces: {{lesson.spaces}}</p>
+                    </div>
+                    <div class="lessonFooter">
+                        <p>Price: {{lesson.price}}</p>
+                        <button class="addButton" v-on:click="addToCart(lesson)">Add to Cart</button>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -147,7 +153,7 @@
 
                             ],
                             cart: [],
-                            key: '',
+                            key: '', 
                             sortedList: [],
                     },
 
