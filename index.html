@@ -12,12 +12,12 @@
 <body>
     <div id="app">
         <header>
-        
-            <button id="cart">{{cartCount}}<span><i class="fa-solid fa-cart-shopping"></i></span></button>
+            <button v-bind:disabled="returnPage" id="cart"  v-bind:class="cartCount === 0 ? 'disabledCart' : '' " v-on:click="showCart" ><span id="cartButton"><i class="fa-solid fa-cart-shopping"></i></span> {{cartCount}} </button>
         </header>
 <main>
+    <div id="lessonDisplay" v-if="showCheckout">
         <div id="sidebar">
-            <p>sort by</p>
+            <h2>Sort by</h2>
             <label for="sub">
                 <input type="radio" value="subject" name="sort" v-model="key" > subject
             </label>
@@ -36,30 +36,52 @@
             <p>order</p>
             <label for="ascending"><input type="radio" value="asc" name="order"  id="ascending"  v-on:change="sortAsc"> ascending</label>
             <label for="descending"><input type="radio" value="dsc"  name="order" id="descending" v-on:change="sortDsc"> descending</label>
-    </div>
+        </div>
 
         <div id="lessonContainer">
             <div class="lessonCard" v-for="lesson in sortedList">
-                <div><img src="" alt=""></div>
+                
                 <div class="lessonBody">
-                    <div class="lessonInfo">
-                    <p class="subject">Subject: {{lesson.subject}}</p> 
-                    <p class="location">Location: {{lesson.location}}</p>
-                    <p class="spaces">Spaces: {{lesson.spaces}}</p>
+                    <div class="lessonInfo"><span class="lessonIcon"><i v-bind:class="lesson.icon"></i></span>
+                    <p class="subject"><span><i class="fa-solid fa-book"></i></span>Subject: {{lesson.subject}}</p> 
+                    <p class="location"><span><i class="fa-solid fa-location-dot"></i></span>Location: {{lesson.location}}</p>
+                    <p class="spaces"> <span><i class="fa-regular fa-user"></i></span>Spaces: {{lesson.spaces}}</p>
+
                     </div>
                     <div class="lessonFooter">
                         <p>Price: {{lesson.price}}</p>
-                        <button class="addButton" v-on:click="addToCart(lesson)">Add to Cart</button>
+                       
+                        <button id="" :disabled="isFull(lesson)"  :class="isFull(lesson) ? 'disabledButton' : 'addButton' " v-on:click="addToCart(lesson)" >Add to Cart</button>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
+    <div v-else>
+       <div id="lessonContainer">
+            <div class="lessonCard" v-for="lesson in cart">
+                
+                <div class="lessonBody">
+                    <div class="lessonInfo"><span class="lessonIcon"><i v-bind:class="lesson.icon"></i></span>
+                    <p class="subject"><span><i class="fa-solid fa-book"></i></span>Subject: {{lesson.subject}}</p> 
+                    <p class="location"><span><i class="fa-solid fa-location-dot"></i></span>Location: {{lesson.location}}</p>
+                    <p class="spaces"> <span><i class="fa-regular fa-user"></i></span>Spaces: {{lesson.spaces}}</p>
 
-        <p>key: {{key}}</p>
-
+                    </div>
+                    <div class="lessonFooter">
+                        <p>Price: {{lesson.price}}</p>
+                       
+                        <button id="" :disabled="isFull(lesson)"  class="removeButton" v-on:click="removeFromCart(lesson)" >Remove from Cart</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
 </main>
-        <script type="text/javascript">
+    </div>
+        <script  type="text/javascript">
+            addToCartButton = document.getElementsByClassName("addButton");
             let afterSchool = new Vue ({
                 el: "#app",
                 data:{
@@ -69,7 +91,7 @@
                             subject: "Math",
                             location: "London",
                             price: 500,
-                            spaces: 4,
+                            spaces: 5,
                             icon: "fa-solid fa-calculator",
                             },
 
@@ -78,7 +100,7 @@
                             subject: "English",
                             location: "London",
                             price: 6,
-                            spaces: 2,
+                            spaces: 5,
                             icon: "fa-solid fa-book-open",
                             },
 
@@ -155,12 +177,29 @@
                             cart: [],
                             key: '', 
                             sortedList: [],
+                            showCheckout: true,
+                            
                     },
 
                 methods: {
                     addToCart: function(lesson) {
+                        if(lesson.spaces > 0){
                         this.cart.push(lesson);
+                        lesson.spaces--;
+                        }
                     },
+
+                    removeFromCart: function(lesson){
+                        this.cart.pop(lesson);
+                        lesson.spaces++
+                    },
+
+                    isFull: function(lesson){
+                    return lesson.spaces === 0;
+                    },
+
+                    
+            
                     sortAsc:  function(){
                         if(this.key === 'subject') {
                             this.sortedList = this.lessons.slice().sort((a,b) =>
@@ -204,6 +243,17 @@
                         }
                     },
 
+                     showCart: function() {
+
+                         if (this.cart.length === 0 ){
+                            this.showCheckout = true;
+                        } else {
+                            this.showCheckout = false;
+                        }
+                       
+                },
+
+
              
                 },
 
@@ -215,12 +265,20 @@
                     cartCount: function() {
                         return this.cart.length;
                     },
+                    returnPage: function() {
+                        if (this.cart.length === 0 ){
+                            this.showCheckout = true;
+                        }
+                    }
+        
 
-                    
                 },
+                
+                   
+            },
 
     
-            });
+            );
         </script>
 
     </body>
