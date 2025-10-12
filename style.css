@@ -190,3 +190,15 @@ header button {
     display: block;
 }
 
+#cartContainer {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 50px;
+}
+
+#checkout input {
+    border-radius: 10px;
+    width: 150px;
+}

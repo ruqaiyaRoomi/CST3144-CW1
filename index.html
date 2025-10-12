@@ -12,7 +12,7 @@
 <body>
     <div id="app">
         <header>
-            <button v-bind:disabled="returnPage" id="cart"  v-bind:class="cartCount === 0 ? 'disabledCart' : '' " v-on:click="showCart" ><span id="cartButton"><i class="fa-solid fa-cart-shopping"></i></span> {{cartCount}} </button>
+            <button id="cart"  v-bind:class="cartCount === 0 ? 'disabledCart' : '' " v-on:click="showCart" ><span id="cartButton"><i class="fa-solid fa-cart-shopping"></i></span> {{cartCount}} </button>
         </header>
 <main>
     <div id="lessonDisplay" v-if="showCheckout">
@@ -34,12 +34,12 @@
                 <input type="radio" value="spaces" name="sort" v-model="key"> availability
             </label>
             <p>order</p>
-            <label for="ascending"><input type="radio" value="asc" name="order"  id="ascending"  v-on:change="sortAsc"> ascending</label>
-            <label for="descending"><input type="radio" value="dsc"  name="order" id="descending" v-on:change="sortDsc"> descending</label>
+            <label for="ascending"><input type="radio"  value="asc" v-model="order" name="order"> ascending</label>
+            <label for="descending"><input type="radio" value="dsc" v-model="order"  name="order" id="descending"> descending</label>
         </div>
 
         <div id="lessonContainer">
-            <div class="lessonCard" v-for="lesson in sortedList">
+            <div class="lessonCard" v-for="lesson in sortfunction">
                 
                 <div class="lessonBody">
                     <div class="lessonInfo"><span class="lessonIcon"><i v-bind:class="lesson.icon"></i></span>
@@ -58,9 +58,16 @@
         </div>
     </div>
     <div v-else>
-       <div id="lessonContainer">
+       <div id="cartContainer">
+             <p id="cartTitle">Cart</p>
+              <div id="checkout">
+                         <label for="name">Name</label>
+                         <input type="text" name="" id="nameInput" placeholder="Enter Full Name">
+                         <label for="phoneNumber">Phone Number</label>
+                         <input type="text" id="phoneNumberInput" placeholder="Enter Phone Number">
+                         <button>Checkout</button>
+                    </div>
             <div class="lessonCard" v-for="lesson in cart">
-                
                 <div class="lessonBody">
                     <div class="lessonInfo"><span class="lessonIcon"><i v-bind:class="lesson.icon"></i></span>
                     <p class="subject"><span><i class="fa-solid fa-book"></i></span>Subject: {{lesson.subject}}</p> 
@@ -71,12 +78,15 @@
                     <div class="lessonFooter">
                         <p>Price: {{lesson.price}}</p>
                        
-                        <button id="" :disabled="isFull(lesson)"  class="removeButton" v-on:click="removeFromCart(lesson)" >Remove from Cart</button>
+                        <button id=""  class="removeButton" v-on:click="removeFromCart(lesson)" >Remove from Cart</button>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
+
+
 
 </main>
     </div>
@@ -96,7 +106,7 @@
                             },
 
                             {
-                            id: 1002,
+                             id: 1002,    
                             subject: "English",
                             location: "London",
                             price: 6,
@@ -105,7 +115,7 @@
                             },
 
                             {
-                            id: 1003,
+                                 id: 1003,
                             subject: "Biology",
                             location: "London",
                             price: 20,
@@ -114,7 +124,7 @@
                             },
 
                             {
-                            id: 1004,
+                                 id: 1004,
                             subject: "hemistry",
                             location: "London",
                             price: 60,
@@ -122,7 +132,7 @@
                             icon: "fa-solid fa-flask",
                             },
                             {
-                            id: 1005,
+                                 id: 1005,
                             subject: "Spanish",
                             location: "London",
                             price: 60,
@@ -130,7 +140,7 @@
                             icon: "fa-solid fa-book-open",
                             },
                             {
-                            id: 1006,
+                                 id: 1006,
                             subject: "French",
                             location: "London",
                             price: 550,
@@ -139,7 +149,7 @@
                             },
 
                             {
-                            id: 1007,
+                                 id: 1007,
                             subject: "English",
                             location: "USA",
                             price: 60,
@@ -148,7 +158,7 @@
                             },
 
                             {
-                            id: 1008,
+                             id: 1008,
                             subject: "Biology",
                             location: "Germany",
                             price: 20,
@@ -157,7 +167,7 @@
                             },
 
                             {
-                            id: 1009,
+                             id: 1009,
                             subject: "Music",
                             location: "Italy",
                             price: 60,
@@ -165,7 +175,7 @@
                             icon: "fa-solid fa-music",
                             },
                             {
-                            id: 1010,
+                             id: 1010,
                             subject: "Math",
                             location: "Canada",
                             price: 60,
@@ -175,8 +185,9 @@
 
                             ],
                             cart: [],
+                            checkout: [],
                             key: '', 
-                            sortedList: [],
+                            order: '',
                             showCheckout: true,
                             
                     },
@@ -190,58 +201,17 @@
                     },
 
                     removeFromCart: function(lesson){
-                        this.cart.pop(lesson);
-                        lesson.spaces++
+                        const index =  this.cart.indexOf(lesson);
+                        if(index !== -1){
+                        this.cart.splice(index, 1)
+                        lesson.spaces++;
+                        }
                     },
 
                     isFull: function(lesson){
                     return lesson.spaces === 0;
                     },
-
                     
-            
-                    sortAsc:  function(){
-                        if(this.key === 'subject') {
-                            this.sortedList = this.lessons.slice().sort((a,b) =>
-                             a.subject.localeCompare(b.subject))
-                        } else if (this.key === 'price') {
-                            this.sortedList = this.lessons.slice().sort((a,b) =>
-                                a.price - b.price
-                            )
-                        } else if (this.key === 'location') {
-                            this.sortedList = this.lessons.slice().sort((a,b) =>
-                                a.location.localeCompare(b.location)
-                            )
-                        } else if (this.key === 'spaces') {
-                            this.sortedList = this.lessons.slice().sort((a,b) =>
-                                a.spaces - b.spaces
-                            ) }
-                        else  {
-                            this.sortedList =  this.lessons
-                        }
-                    },
-
-
-                     sortDsc:  function(){
-                        if(this.key === 'subject') {
-                            this.sortedList = this.lessons.slice().sort((a,b) =>
-                             b.subject.localeCompare(a.subject))
-                        } else if (this.key === 'price') {
-                            this.sortedList = this.lessons.slice().sort((a,b) =>
-                                b.price - a.price
-                            )
-                        } else if (this.key === 'location') {
-                            this.sortedList = this.lessons.slice().sort((a,b) =>
-                                b.location.localeCompare(a.location)
-                            )
-                        } else if (this.key === 'spaces') {
-                            this.sortedList = this.lessons.slice().sort((a,b) =>
-                                b.spaces - a.spaces
-                            ) }
-                        else  {
-                            this.sortedList =  this.lessons
-                        }
-                    },
 
                      showCart: function() {
 
@@ -251,14 +221,7 @@
                             this.showCheckout = false;
                         }
                        
-                },
-
-
-             
-                },
-
-                mounted() {
-                    this.sortedList =  this.lessons;
+                }
                 },
 
                 computed: {
@@ -269,16 +232,35 @@
                         if (this.cart.length === 0 ){
                             this.showCheckout = true;
                         }
-                    }
+                    },
+
+                    sortfunction:  function(){
+                            let  sortedList =  this.lessons.slice();
+                            const order = this.order === 'asc' ? 1 : -1;
+
+                            if(this.key === 'subject') {
+                                return sortedList.sort((a,b) => a.subject.localeCompare(b.subject) * order)
+                        
+                            } else if (this.key === 'price') {
+                               return sortedList.sort((a,b) => (a.price - b.price) * order
+                                )
+                            } else if (this.key === 'location') {
+                               return sortedList.sort((a,b) => a.location.localeCompare(b.location) * order
+                                )
+                            } else if (this.key === 'spaces') {
+                                return sortedList.sort((a,b) =>
+                                    (a.spaces - b.spaces) * order
+                                ) }
+                            else  {
+                               return sortedList }
+                    },
         
 
                 },
-                
-                   
-            },
+    
 
     
-            );
+            });
         </script>
 
     </body>
