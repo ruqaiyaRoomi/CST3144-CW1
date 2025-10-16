@@ -12,7 +12,10 @@
 <body>
     <div id="app">
         <header>
-            <button id="cart"  v-bind:class="cartCount === 0 ? 'disabledCart' : '' " v-on:click="showCart" ><span id="cartButton"><i class="fa-solid fa-cart-shopping"></i></span> {{cartCount}} </button>
+            <label for="search"><input type="text" id="search" placeholder="search "></label>
+            <button  :disabled="cart.length === 0" :class=" cart.length === 0 ? 'disabledCart' : 'cartButton' " v-on:click="showCart" >
+                <span id="cartButton"><i class="fa-solid fa-cart-shopping"></i></span> {{cartCount}} 
+            </button>
         </header>
 <main>
     <div id="lessonDisplay" v-if="showCheckout">
@@ -46,27 +49,27 @@
                     <p class="subject"><span><i class="fa-solid fa-book"></i></span>Subject: {{lesson.subject}}</p> 
                     <p class="location"><span><i class="fa-solid fa-location-dot"></i></span>Location: {{lesson.location}}</p>
                     <p class="spaces"> <span><i class="fa-regular fa-user"></i></span>Spaces: {{lesson.spaces}}</p>
-
                     </div>
                     <div class="lessonFooter">
                         <p>Price: {{lesson.price}}</p>
                        
-                        <button id="" :disabled="isFull(lesson)"  :class="isFull(lesson) ? 'disabledButton' : 'addButton' " v-on:click="addToCart(lesson)" >Add to Cart</button>
+                        <button :disabled="isFull(lesson)"  :class="isFull(lesson) ? 'disabledButton' : 'addButton' " v-on:click="addToCart(lesson)" >Add to Cart</button>
                     </div>
                 </div>
             </div>
         </div>
     </div>
     <div v-else>
-       <div id="cartContainer">
-             <p id="cartTitle">Cart</p>
-              <div id="checkout">
+          <p id="cartTitle">Cart</p>
+          <div id="checkout">
                          <label for="name">Name</label>
-                         <input type="text" name="" id="nameInput" placeholder="Enter Full Name">
+                         <input type="text"  id="nameInput" placeholder="Enter Full Name" v-model.trim()="orderInformation.nameInput">
                          <label for="phoneNumber">Phone Number</label>
-                         <input type="text" id="phoneNumberInput" placeholder="Enter Phone Number">
-                         <button>Checkout</button>
+                         <input type="tel" id="phoneNumberInput" placeholder="Enter Phone Number" v-model.number()="orderInformation.phoneNumber">
+                         <button :disabled="!isFormFilled"  :class="{ checkoutButton: isFormFilled, checkoutButtonDisabled: !isFormFilled }" >Checkout</button>
+                         
                     </div>
+       <div id="cartContainer">
             <div class="lessonCard" v-for="lesson in cart">
                 <div class="lessonBody">
                     <div class="lessonInfo"><span class="lessonIcon"><i v-bind:class="lesson.icon"></i></span>
@@ -76,8 +79,7 @@
 
                     </div>
                     <div class="lessonFooter">
-                        <p>Price: {{lesson.price}}</p>
-                       
+                        <p>Price: {{lesson.price}}</p> 
                         <button id=""  class="removeButton" v-on:click="removeFromCart(lesson)" >Remove from Cart</button>
                     </div>
                 </div>
@@ -86,181 +88,12 @@
     </div>
 
 
-
+<p>phone validation: {{validatePhone}}; Name validation: {{validateName}}</p>
 
 </main>
     </div>
-        <script  type="text/javascript">
-            addToCartButton = document.getElementsByClassName("addButton");
-            let afterSchool = new Vue ({
-                el: "#app",
-                data:{
-                        lessons: [
-                            {
-                            id: 1001,
-                            subject: "Math",
-                            location: "London",
-                            price: 500,
-                            spaces: 5,
-                            icon: "fa-solid fa-calculator",
-                            },
-
-                            {
-                             id: 1002,    
-                            subject: "English",
-                            location: "London",
-                            price: 6,
-                            spaces: 5,
-                            icon: "fa-solid fa-book-open",
-                            },
-
-                            {
-                                 id: 1003,
-                            subject: "Biology",
-                            location: "London",
-                            price: 20,
-                            spaces: 5,
-                            icon: "fa-solid fa-dna",
-                            },
-
-                            {
-                                 id: 1004,
-                            subject: "hemistry",
-                            location: "London",
-                            price: 60,
-                            spaces: 5,
-                            icon: "fa-solid fa-flask",
-                            },
-                            {
-                                 id: 1005,
-                            subject: "Spanish",
-                            location: "London",
-                            price: 60,
-                            spaces: 5,
-                            icon: "fa-solid fa-book-open",
-                            },
-                            {
-                                 id: 1006,
-                            subject: "French",
-                            location: "London",
-                            price: 550,
-                            spaces: 5,
-                            icon: "fa-solid fa-language",
-                            },
-
-                            {
-                                 id: 1007,
-                            subject: "English",
-                            location: "USA",
-                            price: 60,
-                            spaces: 5,
-                            icon: "fa-solid fa-book-open",
-                            },
-
-                            {
-                             id: 1008,
-                            subject: "Biology",
-                            location: "Germany",
-                            price: 20,
-                            spaces: 5,
-                            icon: "fa-solid fa-dna",
-                            },
-
-                            {
-                             id: 1009,
-                            subject: "Music",
-                            location: "Italy",
-                            price: 60,
-                            spaces: 5,
-                            icon: "fa-solid fa-music",
-                            },
-                            {
-                             id: 1010,
-                            subject: "Math",
-                            location: "Canada",
-                            price: 60,
-                            spaces: 5,
-                            icon: "fa-solid fa-calculator",
-                            },
-
-                            ],
-                            cart: [],
-                            checkout: [],
-                            key: '', 
-                            order: '',
-                            showCheckout: true,
-                            
-                    },
-
-                methods: {
-                    addToCart: function(lesson) {
-                        if(lesson.spaces > 0){
-                        this.cart.push(lesson);
-                        lesson.spaces--;
-                        }
-                    },
-
-                    removeFromCart: function(lesson){
-                        const index =  this.cart.indexOf(lesson);
-                        if(index !== -1){
-                        this.cart.splice(index, 1)
-                        lesson.spaces++;
-                        }
-                    },
-
-                    isFull: function(lesson){
-                    return lesson.spaces === 0;
-                    },
-                    
-
-                     showCart: function() {
-
-                         if (this.cart.length === 0 ){
-                            this.showCheckout = true;
-                        } else {
-                            this.showCheckout = false;
-                        }
-                       
-                }
-                },
-
-                computed: {
-                    cartCount: function() {
-                        return this.cart.length;
-                    },
-                    returnPage: function() {
-                        if (this.cart.length === 0 ){
-                            this.showCheckout = true;
-                        }
-                    },
-
-                    sortfunction:  function(){
-                            let  sortedList =  this.lessons.slice();
-                            const order = this.order === 'asc' ? 1 : -1;
-
-                            if(this.key === 'subject') {
-                                return sortedList.sort((a,b) => a.subject.localeCompare(b.subject) * order)
-                        
-                            } else if (this.key === 'price') {
-                               return sortedList.sort((a,b) => (a.price - b.price) * order
-                                )
-                            } else if (this.key === 'location') {
-                               return sortedList.sort((a,b) => a.location.localeCompare(b.location) * order
-                                )
-                            } else if (this.key === 'spaces') {
-                                return sortedList.sort((a,b) =>
-                                    (a.spaces - b.spaces) * order
-                                ) }
-                            else  {
-                               return sortedList }
-                    },
+        <script  type="text/javascript" src="script.js">
         
-
-                },
-    
-
-    
-            });
         </script>
 
     </body>

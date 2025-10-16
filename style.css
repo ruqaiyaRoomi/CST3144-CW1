@@ -14,18 +14,32 @@ body {
     padding: 20px;
     margin: 0px;
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;
   
  }
 
  .cartButton {
     color: white;
     padding-right: 10ox;
+    width: 50px;
+    height: 50px;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 15px;
 
  }
 
  .disabledCart{
     color: #ccc;
+    padding-right: 10ox;
+    width: 50px;
+    height: 50px;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 15px;
+
  }
  
 header button {
@@ -144,17 +158,6 @@ header button {
   background-color: #132157;
 }
 
-#cart {
-    width: 50px;
-    height: 50px;
-    background-color: transparent;
-    border: none;
-    cursor: pointer;
-}
-
-#cart i {
-    font-size: 20px;
-}
 
 
 #sidebar{
@@ -197,8 +200,65 @@ header button {
     justify-content: center;
     margin-top: 50px;
 }
+    #checkout{
+        display: block;
+        text-align: center;
+    }
 
-#checkout input {
+ #cartTitle {
+        font-size: 30px;
+        text-align: center;
+    }
+
+    #checkout input {
     border-radius: 10px;
     width: 150px;
+    height: 30px;
+    border: none;
+
 }
+
+    #checkout input:focus{
+        border-color: none;
+        border: none;
+        outline: none;
+    }
+
+    #checkout label {
+        padding-right: 10px;
+        padding-left: 10px;
+    }
+
+
+    .checkoutButton {
+        background-color: #1e3a8a;
+        color: white;
+        border: none;
+        border-radius: 12px;
+        padding: 10px 16px;
+        margin-left: 20px;
+        font-size: 0.95rem;
+        font-weight: 600;
+        cursor: pointer;
+        gap: 8px;
+        transition: background 0.2s ease;
+    }
+
+    .checkoutButton:hover {
+       background-color: #132157;
+    }
+
+    .checkoutButtonDisabled{
+        background-color: #9ea1a8;
+        color: white;
+        border: none;
+        border-radius: 12px;
+        padding: 10px 16px;
+        margin-left: 20px;
+        font-size: 0.95rem;
+        font-weight: 600;
+        cursor: pointer;
+        gap: 8px;
+        transition: background 0.2s ease;
+    
+    }
