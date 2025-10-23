@@ -18,6 +18,26 @@ body {
   
  }
 
+ header p{
+  color: white;
+ }
+
+  #search {
+        width: 260px;
+        height: 30px;
+        border-radius: 10px;
+        border: none;
+        padding-left: 10px;
+    }
+
+  #search:focus {
+    outline: none;
+  }
+
+
+
+
+
  .cartButton {
     color: white;
     padding-right: 10ox;
@@ -193,49 +213,112 @@ header button {
     display: block;
 }
 
+
+
 #cartContainer {
     display: flex;
     gap: 20px;
     flex-wrap: wrap;
     justify-content: center;
     margin-top: 50px;
+    margin-bottom: 30px;
 }
-    #checkout{
-        display: block;
-        text-align: center;
-    }
 
- #cartTitle {
-        font-size: 30px;
-        text-align: center;
-    }
 
-    #checkout input {
-    border-radius: 10px;
-    width: 150px;
-    height: 30px;
+#cartBody{
+   display: flex;
+    gap: 20px;         
+    flex-wrap: wrap;    
+    justify-content: flex-start;
+    align-items: flex-start;
+}
+
+
+#checkout {
+    background-color: #fff;
+    width: 420px;
+    padding: 50px 35px;
+    margin: 0 auto;              
+    border-radius: 14px;
+    box-shadow: 0 8px 28px rgba(0,0,0,0.08);
+    text-align: center;
+    box-sizing: border-box;
+}
+
+#cartTitle {
+    font-size: 28px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+#goback{
+  color:#132157;
+    width: 50px;
+    height: 50px;
+    background-color: transparent;
     border: none;
-
+    cursor: pointer;
+    font-size: 25px;
+    margin-left: 10px;
 }
 
-    #checkout input:focus{
-        border-color: none;
-        border: none;
-        outline: none;
-    }
+.user_input {
+    position: relative;
+    width: 100%;
+    height: 50px;
+    margin-top: 25px;
+}
 
-    #checkout label {
-        padding-right: 10px;
-        padding-left: 10px;
-    }
+.user_input input {
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    border: none;
+    outline: none;
+    font-size: 16px;
+    color: #132157;
+    font-weight: 600;
+    border-bottom: 2px solid #c9c7c7;
+}
 
+.user_input label {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+    font-size: 16px;
+    color: #000;
+    transition: .5s;
+}
 
-    .checkoutButton {
+.user_input input:focus ~ label,
+.user_input input:valid ~ label {
+    top: -3px;
+    color: #151515;
+}
+
+.user_input i {
+    position: absolute;
+    top: 40%;
+    right: 0.5px;
+    font-size: 18px;
+    transform: translateX(-50%);
+    transition: .5s;
+}
+
+.user_input input:focus ~ i,
+.user_input input:valid ~ i {
+    top: -4px;
+}
+
+.checkoutButton {
         background-color: #1e3a8a;
         color: white;
         border: none;
         border-radius: 12px;
         padding: 10px 16px;
+        margin-top: 20px ;
         margin-left: 20px;
         font-size: 0.95rem;
         font-weight: 600;
@@ -244,16 +327,17 @@ header button {
         transition: background 0.2s ease;
     }
 
-    .checkoutButton:hover {
+.checkoutButton:hover {
        background-color: #132157;
     }
 
-    .checkoutButtonDisabled{
+.checkoutButtonDisabled{
         background-color: #9ea1a8;
         color: white;
         border: none;
         border-radius: 12px;
         padding: 10px 16px;
+         margin-top: 20px ;
         margin-left: 20px;
         font-size: 0.95rem;
         font-weight: 600;
@@ -261,4 +345,16 @@ header button {
         gap: 8px;
         transition: background 0.2s ease;
     
-    }
+}
+
+#bill{
+  background-color: white;
+  width: 200px;
+  height: 230px;
+}
+
+#billHeader {
+  text-align: center;
+  color: black;
+  font-size: 13px;
+}

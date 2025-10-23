@@ -100,6 +100,7 @@ addToCartButton = document.getElementsByClassName("addButton");
                         orderInformation: {
                                 nameInput: '',
                                 phoneNumber: '',
+                                email: '',
                         }
 
                             
@@ -133,9 +134,12 @@ addToCartButton = document.getElementsByClassName("addButton");
                     
                     
                      this.showCheckout = !this.showCheckout; 
-
         
                 },
+
+                    goBack: function() {
+                        this.showCheckout = true;
+                    }
 
                    
                 },
@@ -171,24 +175,31 @@ addToCartButton = document.getElementsByClassName("addButton");
                                return sortedList }
                     },
 
-                   isFormFilled: function(){
-                    let name = this.orderInformation.nameInput.trim()
-                    let phoneNumber = this.orderInformation.phoneNumber.trim()
-                    return !!(name &&phoneNumber)
-                        
-                   },
 
                    validatePhone: function() {
                      let regex = /^\d{10}$/;
                      let phoneNumber = this.orderInformation.phoneNumber.trim() ;
-                     return regex.test(phoneNumber)
+                     return !!(regex.test(phoneNumber) && phoneNumber)
                    },
 
                    validateName: function(){
                     let regex = (/^[A-Za-z]+$/);
                     let name = this.orderInformation.nameInput.trim()
-                    return regex.test(name)
-                   }
+                    return !!(regex.test(name) && name)
+                   },
+
+                   validateEmail:function (){
+                    let regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
+                    let email = this.orderInformation.email.trim();
+
+                    return !!(regex.test(email) && email);
+                   },
+
+                    isFormFilled: function(){
+                    return this.validateEmail && this.validateName && this.validatePhone
+                        
+                   },
+
 
                 },
     
