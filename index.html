@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script src="https://unpkg.com/vue@2.7.8/dist/vue.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+    <div id="app">
+        <header>
+            <p>After School</p>
+            <label for="search"><span></span><input type="text" id="search" placeholder="search "></label>
+            <button  :disabled="cart.length === 0" :class=" cart.length === 0 ? 'disabledCart' : 'cartButton' " v-on:click="showCart" >
+                <span id="cartButton"><i class="fa-solid fa-cart-shopping"></i></span> {{cartCount}} 
+            </button>
+        </header>
+<main>
+    <div id="lessonDisplay" v-if="showCheckout">
+        <div id="sidebar">
+            <h2>Sort by</h2>
+            <label for="sub">
+                <input type="radio" value="subject" name="sort" v-model="key" > subject
+            </label>
+
+            <label for="location">
+                <input type="radio" value="location" name="sort" v-model="key" > location
+            </label>
+
+            <label for="price">
+                <input type="radio"  value="price" name="sort" v-model="key"> price
+            </label>
+
+            <label for="spaces">
+                <input type="radio" value="spaces" name="sort" v-model="key"> availability
+            </label>
+            <p>order</p>
+            <label for="ascending"><input type="radio"  value="asc" v-model="order" name="order"> ascending</label>
+            <label for="descending"><input type="radio" value="dsc" v-model="order"  name="order" id="descending"> descending</label>
+        </div>
+
+        <div id="lessonContainer">
+            <div class="lessonCard" v-for="lesson in sortfunction">
+                
+                <div class="lessonBody">
+                    <div class="lessonInfo"><span class="lessonIcon"><i v-bind:class="lesson.icon"></i></span>
+                    <p class="subject"><span><i class="fa-solid fa-book"></i></span>Subject: {{lesson.subject}}</p> 
+                    <p class="location"><span><i class="fa-solid fa-location-dot"></i></span>Location: {{lesson.location}}</p>
+                    <p class="spaces"> <span><i class="fa-regular fa-user"></i></span>Spaces: {{lesson.spaces}}</p>
+                    </div>
+                    <div class="lessonFooter">
+                        <p>Price: {{lesson.price}}</p>
+                       
+                        <button :disabled="isFull(lesson)"  :class="isFull(lesson) ? 'disabledButton' : 'addButton' " v-on:click="addToCart(lesson)" >Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div v-else id="cartSection">
+        <div id="cartHeader">
+            <p id="cartTitle">Cart</p>
+            <button id="goback" v-on:click="goBack"><i class="fa-solid fa-arrow-left"></i></button>
+        </div>
+          
+                         
+       <div id="cartContainer">
+        <div id="cartBody">
+            <div class="lessonCard" v-for="lesson in cart">
+                <div class="lessonBody">
+                    <div class="lessonInfo"><span class="lessonIcon"><i v-bind:class="lesson.icon"></i></span>
+                    <p class="subject"><span><i class="fa-solid fa-book"></i></span>Subject: {{lesson.subject}}</p> 
+                    <p class="location"><span><i class="fa-solid fa-location-dot"></i></span>Location: {{lesson.location}}</p>
+                    <p class="spaces"> <span><i class="fa-regular fa-user"></i></span>Spaces: {{lesson.spaces}}</p>
+
+                    </div>
+                    <div class="lessonFooter">
+                        <p>Price: {{lesson.price}}</p> 
+                        <button id=""  class="removeButton" v-on:click="removeFromCart(lesson)" >Remove from Cart</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--   <div id="bill">
+                <div id="billHeader">
+                    <p>Total</p>
+                </div>
+                <div id="billBody">
+                    <p>Quantity: {{cart.length}}</p>
+                </div>
+
+                <div id="total">Total Price: </div>
+            </div>
+        </div> -->
+
+          <div id="checkout">
+                         <div class="user_input">
+                            <input type="text" required id="nameInput" v-model="orderInformation.nameInput">
+                            <label>Full Name</label>
+                            <i class="fa-regular fa-user"></i>
+                            <span class="messages" v-if="showNameError">Please enter valid name</span> 
+                        
+                        </div>
+
+                        <div class="user_input">
+                            <input type="text"  required ="email" v-model="orderInformation.email">
+                            <label>Email</label>
+                            <i class="fa-regular fa-envelope"></i>
+                            <span class="messages" v-if="showEmailError">Please enter a valid email</span> 
+                            
+
+                        </div>
+
+                        <div class="user_input">
+                            <input type="tel" required id="phoneNumber"  v-model.number()="orderInformation.phoneNumber">
+                            <label>Phone Number</label>
+                            <i class="fa-solid fa-phone"></i>
+                            <span class="messages" v-if="showPhoneError">Please enter a valid Phone Number</span>
+                        </div>
+                        <button :disabled="!isFormFilled"  :class="{ checkoutButton: isFormFilled, checkoutButtonDisabled: !isFormFilled }"  v-on:click="displayBill">Checkout</button> 
+
+                    </div>
+                     <div id="billContainer" v-if="showbill">
+                        <div id="bill">
+                            <p id="billTitle">Thank you {{orderInformation.nameInput}}!!</p> <button v-on:click="closeBill"><span><i class="fa-solid fa-xmark"></i></span></button>
+                        </div>
+                    </div>
+        </div>
+</main>
+    </div>
+        <script  type="text/javascript" src="./script.js">
+        
+        </script>
+
+    </body>
+</html>
+
