@@ -83,6 +83,7 @@
                     </div>
                 </div>
             </div>
+        </div>
 
         <!--   <div id="bill">
                 <div id="billHeader">
@@ -98,17 +99,18 @@
 
           <div id="checkout">
                          <div class="user_input">
-                            <input type="text" required id="nameInput" v-model="orderInformation.nameInput" >
+                            <input type="text" required id="nameInput" v-model="orderInformation.nameInput">
                             <label>Full Name</label>
                             <i class="fa-regular fa-user"></i>
-                            <span id="messages" v-if="validateName === false "></span>
+                            <span class="messages" v-if="showNameError">Please enter valid name</span> 
                         
                         </div>
 
                         <div class="user_input">
                             <input type="text"  required ="email" v-model="orderInformation.email">
                             <label>Email</label>
-                            <i class="fa-regular fa-envelope"></i> 
+                            <i class="fa-regular fa-envelope"></i>
+                            <span class="messages" v-if="showEmailError">Please enter a valid email</span> 
                             
 
                         </div>
@@ -117,17 +119,17 @@
                             <input type="tel" required id="phoneNumber"  v-model.number()="orderInformation.phoneNumber">
                             <label>Phone Number</label>
                             <i class="fa-solid fa-phone"></i>
+                            <span class="messages" v-if="showPhoneError">Please enter a valid Phone Number</span>
                         </div>
-                        <button :disabled="!isFormFilled"  :class="{ checkoutButton: isFormFilled, checkoutButtonDisabled: !isFormFilled }" >Checkout</button> 
+                        <button :disabled="!isFormFilled"  :class="{ checkoutButton: isFormFilled, checkoutButtonDisabled: !isFormFilled }"  v-on:click="displayBill">Checkout</button> 
 
-            </div>
-        
-
-        
-
-    </div>
-
-
+                    </div>
+                     <div id="billContainer" v-if="showbill">
+                        <div id="bill">
+                            <p id="billTitle">Thank you {{orderInformation.nameInput}}!!</p> <button v-on:click="closeBill"><span><i class="fa-solid fa-xmark"></i></span></button>
+                        </div>
+                    </div>
+        </div>
 </main>
     </div>
         <script  type="text/javascript" src="script.js">

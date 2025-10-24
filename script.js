@@ -97,11 +97,12 @@ addToCartButton = document.getElementsByClassName("addButton");
                             key: '',
                             order: '',
                             showCheckout: true,
+                            showbill: false,
                         orderInformation: {
                                 nameInput: '',
                                 phoneNumber: '',
                                 email: '',
-                        }
+                                spaces:'',                        }
 
                             
                     },
@@ -139,8 +140,15 @@ addToCartButton = document.getElementsByClassName("addButton");
 
                     goBack: function() {
                         this.showCheckout = true;
-                    }
+                    },
 
+                displayBill: function(){
+                    this.showbill = this.showbill ? false : true;
+                },
+
+                closeBill: function(){
+                    this.showbill = false;
+                }
                    
                 },
 
@@ -200,9 +208,19 @@ addToCartButton = document.getElementsByClassName("addButton");
                         
                    },
 
+                   showPhoneError: function(){
+                    return this.orderInformation.phoneNumber.length > 0 && !this.validatePhone},
 
-                },
+                   showNameError: function(){
+                    return this.orderInformation.nameInput.length > 0 && !this.validateName
+                   },
+                   showEmailError: function(){
+
+                    return  this.orderInformation.email.length > 0  && !this.validateEmail;
+
+
+                },}
     
 
     
-            });
+            })
